@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>Zare Valentine Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- n8n chat styles -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font manis sedikit formal -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --pink-bg: #fbeaf2;
+        --pink-soft: #f7d8e6;
+        --pink-strong: #ff6b9d;
+        --text-main: #2b1020;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, sans-serif;
+        background: radial-gradient(
+            circle at top left,
+            #ffe3f0 0,
+            transparent 55%
+          ),
+          radial-gradient(circle at bottom right, #f6d9ff 0, transparent 55%),
+          var(--pink-bg);
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .page-wrapper {
+        width: 100%;
+        max-width: 960px;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 24px;
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.08);
+        padding: 24px 24px 20px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+        gap: 24px;
+      }
+
+      @media (max-width: 768px) {
+        .page-wrapper {
+          grid-template-columns: minmax(0, 1fr);
+          padding: 18px 16px 16px;
+        }
+      }
+
+      .hero {
+        padding: 8px 12px 8px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .hero-title {
+        text-align: center;
+        font-size: 1.9rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+      }
+
+      .hero-subtitle {
+        text-align: center;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+        opacity: 0.9;
+      }
+
+      .hero-card {
+        margin: 0 auto;
+        max-width: 360px;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 183, 213, 0.9),
+          rgba(255, 221, 240, 0.95)
+        );
+        border-radius: 20px;
+        padding: 18px 18px 16px;
+        box-shadow: 0 12px 36px rgba(255, 105, 180, 0.25);
+      }
+
+      .hero-card h2 {
+        margin: 0 0 6px;
+        font-size: 1.25rem;
+        text-align: center;
+      }
+
+      .hero-card p {
+        margin: 4px 0;
+        font-size: 0.95rem;
+        text-align: center;
+      }
+
+      .hero-note {
+        margin-top: 10px;
+        font-size: 0.85rem;
+        text-align: center;
+        opacity: 0.9;
+      }
+
+      /* Container untuk chat */
+      .chat-panel {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        padding: 12px;
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.06);
+        display: flex;
+        flex-direction: column;
+      }
+
+      #n8n-chat {
+        width: 100%;
+        height: 480px;
+      }
+
+      /* === n8n Chat theme (pink) === */
+      :root {
+        --chat--font-family: 'Poppins', -apple-system, BlinkMacSystemFont,
+          'Segoe UI', Roboto, sans-serif;
+
+        --chat--color-primary: #ff6b9d;
+        --chat--color-primary-shade-50: #ff4f8b;
+        --chat--color-primary-shade-100: #f43573;
+
+        --chat--color-secondary: #20b69e;
+        --chat--color-secondary-shade-50: #1ca08a;
+
+        --chat--color-white: #ffffff;
+        --chat--color-light: #ffeef7;
+        --chat--color-dark: #1f2937;
+        --chat--color-disabled: #d2d4d9;
+        --chat--color-typing: #80425e;
+
+        --chat--header--background: transparent;
+        --chat--body--background: transparent;
+        --chat--footer--background: transparent;
+
+        --chat--header--padding: 12px 18px;
+        --chat--heading--font-size: 1.2rem;
+        --chat--subtitle--font-size: 0.9rem;
+
+        --chat--message--font-size: 0.9rem;
+        --chat--message--padding: 10px 14px;
+        --chat--message--border-radius: 16px;
+        --chat--message-line-height: 1.5;
+
+        --chat--message--bot--background: rgba(255, 255, 255, 0.95);
+        --chat--message--bot--color: #111827;
+        --chat--message--user--background: #ff6b9d;
+        --chat--message--user--color: #ffffff;
+
+        --chat--input--border-radius: 999px;
+        --chat--input--background: rgba(255, 255, 255, 0.8);
+      }
+
+      .chat-window {
+        border-radius: 16px;
+        background: radial-gradient(
+            circle at 10% 0%,
+            rgba(255, 183, 213, 0.25) 0,
+            transparent 55%
+          ),
+          radial-gradient(
+            circle at 90% 100%,
+            rgba(255, 213, 235, 0.25) 0,
+            transparent 55%
+          ),
+          #fbeaf2;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      .n8n-chat-messages {
+        padding: 1.2rem 1.4rem 5rem;
+      }
+
+      .n8n-chat-header {
+        padding: 0.9rem 1.4rem 0.6rem;
+      }
+
+      .n8n-chat-header__title {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .n8n-chat-header__subtitle {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      .n8n-chat-input {
+        padding: 0.6rem 1.4rem 1rem;
+      }
+
+      .n8n-chat-message {
+        margin-bottom: 0.55rem;
+      }
+
+      .n8n-chat-message--user {
+        margin-left: auto;
+      }
+
+      .n8n-chat-message--bot {
+        margin-right: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <!-- Kolom kiri: judul & undangan -->
+      <section class="hero">
+        <h1 class="hero-title">Zare &amp; Zeze</h1>
+        <p class="hero-subtitle">
+          Bot kecil khusus buat valentine kitaa, biar ajakan Zare ke kamu terasa lebih spesial.
+        </p>
+
+        <div class="hero-card">
+          <h2>Undangan Valentine 💌</h2>
+          <p>“Hai sayangnya Zare,</p>
+          <p>di sini Zare titip banyak cerita, ide date, dan ajakan jalan bareng kamu.”</p>
+          <p class="hero-note">
+            Coba mulai chat di sebelah, nanti bot‑nya bakal nyampein semua ide Zare ke kamu pelan‑pelan.
+          </p>
+        </div>
+      </section>
+
+      <!-- Kolom kanan: chat n8n -->
+      <section class="chat-panel">
+        <div id="n8n-chat"></div>
+      </section>
+    </div>
+
+    <script type="module">
+      import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+      createChat({
+        target: '#n8n-chat',
+        mode: 'window', // dipasang di dalam container
+        webhookUrl:
+          'https://sandirsln.app.n8n.cloud/webhook/499666c3-d807-4bb7-8195-43932f64a91f/chat',
+        showWelcomeScreen: false,
+        loadPreviousSession: false,
+        i18n: {
+          en: {
+            title: 'Zare Bot',
+            subtitle: 'Bot khusus buat valentine kitaa xixi',
+            inputPlaceholder: 'kamu bisa ketik disini yaa',
+          },
+        },
+        initialMessages: ['Hai sayang xixixi :>'],
+        enableStreaming: false,
+      });
+    </script>
+  </body>
+</html>
