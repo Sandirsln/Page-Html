@@ -13,7 +13,7 @@
 
     <!-- Font -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -47,9 +47,83 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 16px;
+        overflow: hidden; /* Mencegah scroll saat tombol lari */
       }
 
+      /* --- VALENTINE OVERLAY STYLES --- */
+      #valentine-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #fff0f5 0%, #ffdeeb 100%);
+        z-index: 9999; /* Pastikan di atas segalanya */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+      }
+
+      #valentine-overlay.hidden {
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .valentine-question {
+        font-size: 2.5rem;
+        color: #d63384;
+        margin-bottom: 2rem;
+        font-weight: 700;
+        padding: 0 20px;
+      }
+
+      .valentine-gif {
+        width: 200px;
+        height: auto;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+      }
+
+      .btn-container {
+        display: flex;
+        gap: 20px;
+        position: relative; /* Untuk konteks tombol absolute */
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        height: 100px; /* Area aman tombol awal */
+      }
+
+      .v-btn {
+        padding: 12px 32px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      #yes-btn {
+        background-color: #ff69b4;
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+        z-index: 10; /* Agar selalu di atas tombol No jika tidak sengaja bertumpuk */
+        transform-origin: center;
+      }
+
+      #no-btn {
+        background-color: #e0e0e0;
+        color: #555;
+        position: relative; /* Awalnya relative, jadi absolute saat hover */
+      }
+
+      /* --- EXISTING PAGE STYLES --- */
       .page-wrapper {
         width: 100%;
         max-width: 1100px;
@@ -60,9 +134,18 @@
         display: grid;
         grid-template-columns: 1fr 1.2fr;
         gap: 32px;
-        height: 85vh; /* Sedikit dipertinggi */
+        height: 85vh;
         min-height: 600px;
-        position: relative; /* Penting */
+        position: relative;
+        opacity: 0; /* Hidden awalnya */
+        transform: scale(0.95);
+        transition: opacity 1s ease 0.5s, transform 1s ease 0.5s; /* Delay biar smooth setelah overlay hilang */
+      }
+
+      /* Class untuk memunculkan halaman utama */
+      .page-wrapper.visible {
+        opacity: 1;
+        transform: scale(1);
       }
 
       @media (max-width: 768px) {
@@ -71,29 +154,29 @@
           height: auto;
           min-height: 800px;
         }
+        .valentine-question {
+          font-size: 1.8rem;
+        }
       }
 
-      /* Kiri: Hero */
+      /* ... (Sisa CSS n8n dari file sebelumnya tetap sama) ... */
       .hero {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
       }
-
       .hero-title {
         font-size: 2.2rem;
         font-weight: 600;
         color: #d63384;
         margin: 0 0 10px 0;
       }
-
       .hero-subtitle {
         text-align: center;
         margin-bottom: 30px;
         opacity: 0.8;
       }
-
       .hero-card {
         width: 100%;
         max-width: 360px;
@@ -105,7 +188,6 @@
         position: relative;
         overflow: hidden;
       }
-      
       .hero-card::before {
         content: "💌";
         position: absolute;
@@ -115,27 +197,19 @@
         opacity: 0.1;
         transform: rotate(-20deg);
       }
-
-      /* Kanan: Chat Panel Container */
       .chat-panel {
         background: #ffffff;
         border-radius: 20px;
         box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
-        position: relative; /* Wajib relative agar child absolute mengacu kesini */
+        position: relative;
         overflow: hidden;
         height: 100%; 
         width: 100%;
       }
-
-      /* Target div untuk script n8n */
       #n8n-chat {
         width: 100%;
         height: 100%;
       }
-
-      /* --- CRITICAL OVERRIDES UNTUK N8N --- */
-      
-      /* Memaksa wrapper utama n8n agar mengisi parent .chat-panel */
       .n8n-chat-widget {
         position: absolute !important;
         top: 0 !important;
@@ -148,43 +222,48 @@
         z-index: 10 !important;
         font-family: 'Poppins', sans-serif !important;
       }
-
-      /* Pastikan area pesan mengisi ruang sisa */
       .chat-messages-list {
-        padding-bottom: 80px !important; /* Ruang untuk input */
+        padding-bottom: 80px !important;
       }
-
-      /* Menyembunyikan tombol toggle/close jika muncul */
       .n8n-chat-widget-toggler, 
       .chat-header-close-button {
         display: none !important;
       }
-
-      /* Header styling */
       .chat-header {
         padding: 1rem 1.5rem !important;
         border-bottom: 1px solid #ffeef5 !important;
       }
-
-      /* Input area styling */
       .chat-input-container {
         position: absolute !important;
         bottom: 0 !important;
         width: 100% !important;
         background: white !important;
       }
-
     </style>
   </head>
 
   <body>
-    <div class="page-wrapper">
+
+    <!-- OVERLAY SCREEN -->
+    <div id="valentine-overlay">
+      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eGk2aGZ5eGk2aGZ5eGk2aGZ5eGk2aGZ5eGk2aGZ5eGk2YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9wXM/giphy.gif" alt="Cute Cat" class="valentine-gif">
+      <h1 class="valentine-question">Will you be my Valentine? 🌹</h1>
+      
+      <div class="btn-container">
+        <button id="yes-btn" class="v-btn">Yes, I will! 💖</button>
+        <button id="no-btn" class="v-btn">No</button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT (Hidden Initially) -->
+    <div class="page-wrapper" id="main-content">
       
       <!-- Kiri -->
       <section class="hero">
         <h1 class="hero-title">Zare &amp; Zeze</h1>
         <p class="hero-subtitle">
-          Bot kecil ini Zare buat khusus untuk nemenin Valentine kita tahun ini.
+          Yay! Terima kasih udah bilang Yes! <br>
+          Bot kecil ini Zare buat khusus untuk nemenin Valentine kita.
         </p>
 
         <div class="hero-card">
@@ -207,31 +286,85 @@
     <script type="module">
       import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
 
-      createChat({
-        target: '#n8n-chat',
-        webhookUrl: 'https://sandirsln.app.n8n.cloud/webhook/499666c3-d807-4bb7-8195-43932f64a91f/chat',
-        
-        // Mode 'fullscreen' akan merender chat dalam keadaan terbuka penuh.
-        // CSS override .n8n-chat-widget di atas akan memaksanya tetap di dalam div #n8n-chat
-        // alih-alih menutupi seluruh layar browser.
-        mode: 'fullscreen', 
-        
-        showWelcomeScreen: false,
-        loadPreviousSession: false,
-        
-        i18n: {
-          en: {
-            title: 'Zare Bot ❤️',
-            subtitle: 'Asisten pribadi Zare buat Zeze',
-            inputPlaceholder: 'Ketik pesan untuk Zare...',
-          },
-        },
-        
-        initialMessages: [
-          'Hai sayang! Selamat Valentine yaa 🌹',
-          'Zare udah titip pesen nih, mau dengerin sekarang?'
-        ],
+      // --- LOGIKA TOMBOL NO & YES ---
+      const noBtn = document.getElementById('no-btn');
+      const yesBtn = document.getElementById('yes-btn');
+      const overlay = document.getElementById('valentine-overlay');
+      const mainContent = document.getElementById('main-content');
+      
+      let scaleSize = 1;
+
+      // Fungsi untuk mengecek tabrakan dengan tombol Yes
+      function isColliding(elem1, x, y) {
+        const rect1 = elem1.getBoundingClientRect();
+        // Area prediksi tombol No di posisi baru (asumsi ukuran 80x40 biar aman)
+        const rect2 = { left: x, top: y, right: x + noBtn.offsetWidth, bottom: y + noBtn.offsetHeight };
+
+        return !(rect2.left > rect1.right + 20 || 
+                 rect2.right < rect1.left - 20 || 
+                 rect2.top > rect1.bottom + 20 || 
+                 rect2.bottom < rect1.top - 20);
+      }
+
+      function moveButton() {
+        const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+        const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+
+        let newX, newY;
+        let attempts = 0;
+
+        // Coba cari posisi yang tidak menabrak tombol Yes (max 50x coba biar gak infinite loop)
+        do {
+          newX = Math.random() * maxX;
+          newY = Math.random() * maxY;
+          attempts++;
+        } while (isColliding(yesBtn, newX, newY) && attempts < 50);
+
+        // Ubah posisi jadi fixed/absolute agar bisa lari kemana aja
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = `${newX}px`;
+        noBtn.style.top = `${newY}px`;
+
+        // Perbesar tombol Yes setiap kali No didekati
+        scaleSize += 0.2;
+        yesBtn.style.transform = `scale(${scaleSize})`;
+      }
+
+      noBtn.addEventListener('mouseover', moveButton);
+      noBtn.addEventListener('click', moveButton); // Buat HP/Touchscreen
+
+      // Fungsi Jika Yes Ditekan
+      yesBtn.addEventListener('click', () => {
+        // Efek transisi
+        overlay.classList.add('hidden');
+        mainContent.classList.add('visible');
+
+        // Init Chat N8N setelah Yes ditekan (opsional, bisa ditaruh di luar juga)
+        initChat();
       });
+
+      // --- LOGIKA N8N ---
+      function initChat() {
+        createChat({
+          target: '#n8n-chat',
+          webhookUrl: 'https://sandirsln.app.n8n.cloud/webhook/499666c3-d807-4bb7-8195-43932f64a91f/chat',
+          mode: 'fullscreen', 
+          showWelcomeScreen: false,
+          loadPreviousSession: false,
+          i18n: {
+            en: {
+              title: 'Zare Bot ❤️',
+              subtitle: 'Asisten pribadi Zare buat Zeze',
+              inputPlaceholder: 'Ketik pesan untuk Zare...',
+            },
+          },
+          initialMessages: [
+            'Hai sayang! Selamat Valentine yaa 🌹',
+            'Makasih udah pilih YES tadi xixixi',
+            'Zare udah titip pesen nih, mau dengerin sekarang?'
+          ],
+        });
+      }
     </script>
   </body>
 </html>
