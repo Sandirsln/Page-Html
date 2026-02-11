@@ -81,11 +81,15 @@
         padding: 0 20px;
       }
 
-      .valentine-gif {
-        width: 200px;
-        height: auto;
+      /* Container khusus untuk membatasi lebar GIF Tenor */
+      .gif-container {
+        width: 100%;
+        max-width: 300px; /* Batasi agar tidak terlalu besar */
         margin-bottom: 2rem;
         border-radius: 15px;
+        overflow: hidden; /* Agar border radius bekerja pada iframe/embed */
+        box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+        background: white; /* Background putih jaga-jaga transparan */
       }
 
       .btn-container {
@@ -246,7 +250,16 @@
 
     <!-- OVERLAY SCREEN -->
     <div id="valentine-overlay">
-      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z5eGk2aGZ5eGk2aGZ5eGk2aGZ5eGk2aGZ5eGk2aGZ5eGk2YSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9wXM/giphy.gif" alt="Cute Cat" class="valentine-gif">
+      
+      <!-- Container untuk membatasi lebar Embed Tenor -->
+      <div class="gif-container">
+        <div class="tenor-gif-embed" data-postid="2242144551293001810" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+          <a href="https://tenor.com/view/flowers-flower-bouquet-gift-i-love-you-gif-2242144551293001810">Flowers Bouquet Meme</a>
+          from <a href="https://tenor.com/search/flowers-memes">Flowers Memes</a>
+        </div> 
+        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+      </div>
+
       <h1 class="valentine-question">Will you be my Valentine? 🌹</h1>
       
       <div class="btn-container">
