@@ -5,7 +5,7 @@
     <title>Zare & Zeze Valentine Chat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- n8n chat base styles -->
+    <!-- n8n chat base styles (Wajib ada agar layout chat tidak hancur) -->
     <link
       href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css"
       rel="stylesheet"
@@ -21,7 +21,24 @@
       :root {
         --pink-bg: #fbeaf2;
         --pink-soft: #f7d8e6;
+        --pink-accent: #ffb7d5;
         --text-main: #2b1020;
+        
+        /* --- OVERRIDE N8N VARIABLES --- */
+        /* Mengubah warna default n8n (biasanya biru/hitam) menjadi tema Pink Valentine */
+        --chat--color-primary: #ff69b4; /* Hot Pink untuk tombol kirim/user chat */
+        --chat--color-secondary: #fbeaf2; /* Background bubble bot */
+        --chat--color-light: #ffffff;
+        --chat--font-family: 'Poppins', sans-serif; /* Paksa font sama */
+        --chat--window--width: 100%; /* Paksa lebar penuh */
+        --chat--window--height: 100%; /* Paksa tinggi penuh */
+        --chat--spacing: 1rem;
+        --chat--message--bot--background: #fdf2f8;
+        --chat--message--bot--color: #2b1020;
+        --chat--message--user--background: #ff85c0;
+        --chat--message--user--color: white;
+        --chat--header--background: transparent; /* Hilangkan warna header n8n */
+        --chat--header--color: var(--text-main);
       }
 
       * {
@@ -50,153 +67,198 @@
       .page-wrapper {
         width: 100%;
         max-width: 1100px;
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(255, 255, 255, 0.95); /* Sedikit lebih solid */
         border-radius: 24px;
         box-shadow: 0 18px 60px rgba(0, 0, 0, 0.08);
-        padding: 24px 24px 20px;
+        padding: 24px;
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
-        gap: 24px;
+        grid-template-columns: 1fr 1.2fr; /* Proporsi kiri kanan */
+        gap: 32px;
+        height: 80vh; /* Tinggi fix untuk desktop agar rapi */
+        min-height: 600px;
       }
 
       @media (max-width: 768px) {
         .page-wrapper {
-          grid-template-columns: minmax(0, 1fr);
-          padding: 18px 16px 16px;
+          grid-template-columns: 1fr;
+          height: auto;
+          padding: 18px 16px;
         }
       }
 
+      /* --- BAGIAN KIRI (HERO) --- */
       .hero {
-        padding: 8px 12px 8px 8px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
+        padding: 10px;
       }
 
       .hero-title {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-weight: 600;
-        letter-spacing: 0.04em;
-        margin-bottom: 8px;
+        letter-spacing: 0.02em;
+        margin: 0 0 10px 0;
+        color: #d63384; /* Pink tua */
       }
 
       .hero-subtitle {
         text-align: center;
-        font-size: 0.95rem;
-        margin-bottom: 20px;
-        opacity: 0.9;
+        font-size: 1rem;
+        margin-bottom: 30px;
+        opacity: 0.8;
+        line-height: 1.6;
+        max-width: 90%;
       }
 
       .hero-card {
-        margin: 0 auto;
-        max-width: 380px;
+        width: 100%;
+        max-width: 360px;
         background: linear-gradient(
           135deg,
-          rgba(255, 183, 213, 0.9),
-          rgba(255, 221, 240, 0.95)
+          #ffd1e8 0%,
+          #fff0f7 100%
         );
-        border-radius: 20px;
-        padding: 18px 18px 16px;
-        box-shadow: 0 12px 36px rgba(255, 105, 180, 0.25);
+        border: 2px solid #fff;
+        border-radius: 24px;
+        padding: 24px;
+        box-shadow: 0 12px 30px rgba(255, 105, 180, 0.15);
+        position: relative;
+        overflow: hidden;
+      }
+      
+      /* Hiasan background card */
+      .hero-card::before {
+        content: "💌";
+        position: absolute;
+        font-size: 8rem;
+        right: -20px;
+        bottom: -20px;
+        opacity: 0.1;
+        transform: rotate(-20deg);
       }
 
       .hero-card h2 {
-        margin: 0 0 6px;
-        font-size: 1.25rem;
+        margin: 0 0 12px;
+        font-size: 1.3rem;
         text-align: center;
+        color: #b71c1c;
       }
 
       .hero-card p {
-        margin: 4px 0;
+        margin: 8px 0;
         font-size: 0.95rem;
         text-align: center;
+        line-height: 1.5;
       }
 
       .hero-note {
-        margin-top: 10px;
-        font-size: 0.85rem;
+        margin-top: 16px;
+        font-size: 0.8rem;
         text-align: center;
-        opacity: 0.9;
+        opacity: 0.7;
+        font-style: italic;
+        padding-top: 10px;
+        border-top: 1px dashed rgba(0,0,0,0.1);
       }
 
-      /* Panel chat: kotak putih di kanan */
+      /* --- BAGIAN KANAN (CHAT PANEL) --- */
       .chat-panel {
         background: #ffffff;
         border-radius: 20px;
-        padding: 12px;
-        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.06);
+        box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03); /* Border halus */
+        position: relative;
+        overflow: hidden; /* Agar chat tidak keluar border */
         display: flex;
         flex-direction: column;
       }
 
+      /* Container ID untuk n8n */
       #n8n-chat {
         width: 100%;
-        height: 480px;
+        height: 100%; /* Penuhi parent */
+        position: relative;
+        z-index: 1;
       }
 
-      /* Sedikit penyesuaian default n8n biar rapi */
-      .n8n-chat-messages {
-        padding: 1.2rem 1.4rem 5rem;
+      /* --- HACKS KHUSUS MENIMPA STYLE BAWAAN N8N --- */
+      
+      /* Sembunyikan tombol launcher bulat (bubble) */
+      .n8n-chat-widget-toggler {
+        display: none !important;
       }
 
-      .n8n-chat-header {
-        padding: 0.9rem 1.4rem 0.6rem;
+      /* Hilangkan shadow default window n8n agar flat */
+      .chat-window {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: none !important;
+      }
+      
+      /* Sesuaikan header n8n */
+      .chat-header {
+        background: #fff0f6 !important; /* Header pink sangat muda */
+        padding: 16px 20px !important;
+        border-bottom: 1px solid #ffdeeb !important;
+      }
+      
+      .chat-header h1 {
+        color: #d63384 !important;
+        font-size: 1.1rem !important;
       }
 
-      .n8n-chat-header__title {
-        font-size: 1.1rem;
-        font-weight: 600;
+      /* Area input chat */
+      .chat-input-container {
+        border-top: 1px solid #f0f0f0 !important;
+      }
+      
+      /* Tombol kirim */
+      .chat-input-send-button {
+        color: #ff69b4 !important;
+      }
+      
+      /* Footer branding n8n (opsional, disembunyikan agar bersih) */
+      .chat-footer {
+        display: none !important;
       }
 
-      .n8n-chat-header__subtitle {
-        font-size: 0.9rem;
-        opacity: 0.9;
-      }
-
-      .n8n-chat-input {
-        padding: 0.6rem 1.4rem 1rem;
-      }
-
-      .n8n-chat-message {
-        margin-bottom: 0.55rem;
-      }
-
-      .n8n-chat-message--user {
-        margin-left: auto;
-      }
-
-      .n8n-chat-message--bot {
-        margin-right: auto;
-      }
     </style>
   </head>
 
   <body>
     <div class="page-wrapper">
-      <!-- Kiri: undangan -->
+      
+      <!-- Kiri: Penjelasan / Undangan -->
       <section class="hero">
         <h1 class="hero-title">Zare &amp; Zeze</h1>
         <p class="hero-subtitle">
-          Bot kecil khusus buat valentine kitaa, biar ajakan Zare ke kamu terasa
-          lebih spesial.
+          Bot kecil ini Zare buat khusus untuk nemenin Valentine kita tahun ini.
         </p>
 
         <div class="hero-card">
-          <h2>Undangan Valentine 💌</h2>
+          <h2>Special Invitation 💌</h2>
           <p>“Hai sayangnya Zare,</p>
-          <p>di sini Zare titip banyak cerita, ide date, dan ajakan jalan bareng kamu.”</p>
+          <p>Zare udah siapin alur cerita dan beberapa opsi date menarik disini.”</p>
           <p class="hero-note">
-            Coba mulai chat di sebelah, nanti bot‑nya bakal nyampein semua ide
-            Zare ke kamu pelan‑pelan.
+            Silakan sapa bot disamping (kanan), dia udah tau harus ngomong apa ke kamu.
           </p>
         </div>
       </section>
 
-      <!-- Kanan: chat n8n -->
+      <!-- Kanan: Chat Embed -->
       <section class="chat-panel">
         <div id="n8n-chat"></div>
       </section>
+      
     </div>
 
     <script type="module">
@@ -204,20 +266,29 @@
 
       createChat({
         target: '#n8n-chat',
-        mode: 'fullscreen', // isi penuh kotak putih
-        webhookUrl:
-          'https://sandirsln.app.n8n.cloud/webhook/499666c3-d807-4bb7-8195-43932f64a91f/chat',
+        webhookUrl: 'https://sandirsln.app.n8n.cloud/webhook/499666c3-d807-4bb7-8195-43932f64a91f/chat',
+        
+        // Mode window agar strukturnya tetap, tapi kita override CSS-nya jadi full
+        mode: 'window', 
+        
         showWelcomeScreen: false,
         loadPreviousSession: false,
+        
+        // Terjemahan & Teks
         i18n: {
           en: {
-            title: 'Zare Bot',
-            subtitle: 'Bot khusus buat valentine kitaa xixi',
-            inputPlaceholder: 'kamu bisa ketik disini yaa',
+            title: 'Zare Bot ❤️',
+            subtitle: 'Asisten pribadi Zare buat Zeze',
+            inputPlaceholder: 'Ketik pesan untuk Zare...',
+            getStarted: 'Mulai Chat',
           },
         },
-        initialMessages: ['Hai sayang xixixi :>'],
-        enableStreaming: false,
+        
+        // Pesan pembuka otomatis
+        initialMessages: [
+          'Hai sayang! Selamat Valentine yaa 🌹',
+          'Zare udah titip pesen nih, mau dengerin sekarang?'
+        ],
       });
     </script>
   </body>
